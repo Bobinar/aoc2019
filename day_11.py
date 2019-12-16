@@ -173,7 +173,7 @@ if __name__ == '__main__':
 
     current_direction = 0 # 0=up, 1=right, 2=down, 3=left
 
-    current_tile_color = 0 # 0=black, 1=white
+    current_tile_color = 1 # 0=black, 1=white
 
     out_pc=0
     out_rel_base=0
@@ -182,7 +182,10 @@ if __name__ == '__main__':
 
     while out_pc != -1:
         color_to_paint, out_pc, out_rel_base = run_code_with_params(code, [current_tile_color], out_pc, out_rel_base)
+        if out_pc == -1:
+            break
         turn_direction, out_pc, out_rel_base = run_code_with_params(code, [current_tile_color], out_pc, out_rel_base)
+
 
         if turn_direction == 0:
             current_direction = current_direction - 1
@@ -197,18 +200,33 @@ if __name__ == '__main__':
 
         if current_direction == 0:
             current_position = (current_position[0], current_position[1] - 1)
-        elif current_tile_color == 1:
+        elif current_direction == 1:
             current_position = (current_position[0]+1, current_position[1])
-        elif current_tile_color == 2:
+        elif current_direction == 2:
             current_position = (current_position[0], current_position[1] + 1)
-        elif current_tile_color == 3:
+        elif current_direction == 3:
             current_position = (current_position[0]-1, current_position[1])
 
         if current_position in paint_dict.keys():
             current_tile_color = paint_dict[current_position]
         else:
             current_tile_color = 0
+        print(current_position)
     print(len(paint_dict.keys()))
+
+    image = []
+    for i in range(6):
+        image.append([])
+        for j in range(50):
+            value = 0 if (j, i) not in paint_dict.keys() else paint_dict[(j, i)]
+            char = ' ' if value == 0 else '#'
+            image[i].append(char)
+
+        print(image[i])
+
+
+
+
 
 
 
